@@ -107,8 +107,8 @@ public abstract class AbstractObjectProvider<T> implements ObjectProvider<T>, Ob
     }
 
     /**
-     * Get entity annotations passed to request/response. This method filters annotations that are proxy instances (proxy
-     * annotations are taken from resource method and passed in this list).
+     * Get entity annotations passed to request/response. This method filters annotations using the EntityFiltering
+     * annotation.
      *
      * @param annotations annotations obtained from provider.
      * @return annoations passed to request/response.
