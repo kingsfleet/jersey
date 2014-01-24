@@ -40,17 +40,19 @@
 
 package org.glassfish.jersey.message.filtering.spi;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Lists;
+
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+
 import java.util.ArrayList;
 import java.util.Set;
 
 import javax.inject.Inject;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.collect.Lists;
+import org.glassfish.jersey.message.filtering.EntityFiltering;
 
 /**
  * Common implementation of {@link ObjectProvider object provider} and {@link ObjectGraphTransformer object graph transformer}.
@@ -114,7 +116,7 @@ public abstract class AbstractObjectProvider<T> implements ObjectProvider<T>, Ob
         final ArrayList<Annotation> entityAnnotations = Lists.newArrayList();
 
         for (final Annotation annotation : annotations) {
-            if (!(annotation instanceof Proxy)) {
+            if (annotation.annotationType().isAnnotationPresent(EntityFiltering.class)) {
                 entityAnnotations.add(annotation);
             }
         }
