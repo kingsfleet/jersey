@@ -42,10 +42,15 @@ package org.glassfish.jersey.message.filtering.spi;
 
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 
 import java.util.ArrayList; 
+import java.util.Arrays;
 import java.util.Set;
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 import javax.inject.Inject;
 
@@ -115,12 +120,25 @@ public abstract class AbstractObjectProvider<T> implements ObjectProvider<T>, Ob
      */
     private Annotation[] getEntityAnnotations(final Annotation[] annotations) {
         final ArrayList<Annotation> entityAnnotations = Lists.newArrayList();
+        
+        String inputAnnotations = Arrays.toString(annotations);
 
         for (final Annotation annotation : annotations) {
-            if (annotation.annotationType().isAnnotationPresent(EntityFiltering.class)) {
+            final Class<? extends Annotation> annotationType = annotation.annotationType();
+
+            if (annotationType.isAnnotationPresent(EntityFiltering.class)
+                    || annotationType.equals(RolesAllowed.class)
+                    || annotationType.equals(PermitAll.class)
+                    || annotationType.equals(DenyAll.class)) {
                 entityAnnotations.add(annotation);
             }
+            else
+            {
+                int i = 0;
+            }
         }
+        
+        String asString = entityAnnotations.toString();
 
         return entityAnnotations.toArray(new Annotation[entityAnnotations.size()]);
     }
