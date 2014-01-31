@@ -118,11 +118,9 @@ public abstract class AbstractObjectProvider<T> implements ObjectProvider<T>, Ob
      * @param annotations annotations obtained from provider.
      * @return annoations passed to request/response.
      */
-    private Annotation[] getEntityAnnotations(final Annotation[] annotations) {
+    protected Annotation[] getEntityAnnotations(final Annotation[] annotations) {
         final ArrayList<Annotation> entityAnnotations = Lists.newArrayList();
         
-        String inputAnnotations = Arrays.toString(annotations);
-
         for (final Annotation annotation : annotations) {
             final Class<? extends Annotation> annotationType = annotation.annotationType();
 
@@ -138,8 +136,6 @@ public abstract class AbstractObjectProvider<T> implements ObjectProvider<T>, Ob
             }
         }
         
-        String asString = entityAnnotations.toString();
-
         return entityAnnotations.toArray(new Annotation[entityAnnotations.size()]);
     }
 
